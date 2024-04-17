@@ -1,4 +1,4 @@
-Package: PCA
+Package: PCAmethod
 Type: Package
 Title: Principle Component Analysis Package
 Version: 0.1.0
