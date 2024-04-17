@@ -15,5 +15,88 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(PCA)
+library(PCAmethod)
+```
+
+## Instructions
+
+* Prepare a **10-15 minute presentation** on this statistical method and data visualization, describing the purpose of the method and walk the class through examples/applications of its use using a publicly available dataset (e.g., from Kaggle, Google Dataset Search, Data.gov, etc.).
+* Develop an accompanying ***R*** package and HTML “vignette” taking a user through the method/workflow that will be shared through ***GitHub***.
+
+### What to Do {.unnumbered}
+
+* Produce a ".qmd" file that will be the basis for a module *vignette* that you build and will bundle into a custom ***R*** package.
+* Include a background section on the *statistical method/topic/data visualization procedures*
+  + Explain the set of analyses either demonstrating the method being explored
+* Organize similarly to class modules 
+* The presentation can be done from the module itself
+* Bundle the data you are working with into one or more included *datasets* 
+* Bundle code for least two *functions* that are called in the vignette. 
+* The functions you include can be custom functions that you create, but it is also perfectly fine to use functions that you have copied from other packages and include into your own package. 
+* The important thing is that you are bundling them together with your dataset and vignette for easy distribution. 
+* You will want to create your own documentation for each function, as discussed in [**Module 25**](#module-25) on custom package development. 
+* We are learning how to distribute shared data and code to other researchers.
+
+### What to Turn In {.unnumbered}
+
+* A 10-15 min presentation
+* A custom **R package** that can be shared as a single file and loaded into an ***R*** workspace (e.g., using the `install.packages()` function). The package should contain:
+  + A set of functions and associated function documentation.
+  + One or more relevant datasets (simulated or, preferably, real data), that you use in a module vignette about your chosen topic,
+  + A vignette that walks users through demonstrations of relevant analyses,
+  + Appropriate METADATA for your package (e.g., information on dependencies, etc.),
+
+> **NOTE:** [**Module 25**](#module-25) takes the user through all of the step of package development, so use it as a resource! We will work through this module during our 2nd to last class.
+
+* One group member uploads the final **R Package**'s bundled ".gz.tar" file to **Canvas**
+* All group members share the repository ***GitHub*** URL to **Canvas**.
+
+> **NOTE:** Tony should be able to CLONE the repository and see all of the components associated with the package development.
+
+
+
+
+
+
+# Principal Component Analysis {.unnumbered}
+
+## Objectives {.unnumbered}
+
+> This module provides an overview of how to ...
+
+
+
+
+## Custom dataset
+
+It is often useful to include example datasets in your ***R package*** to use in examples or vignettes or to illustrate a data format.
+
+To include a dataset in your package, you would create a `data` subdirectory inside of the package directory and place your dataset there, in “.RData” format (using the extension “.RData” or “.rda”).
+
+You can use the `use_data()` function from {use_this} to create the data directory and populate it with data from a dataframe.
+
+```{r}
+#| evaluate: false
+
+# method 1
+library(tidyverse)
+f <- "https://raw.githubusercontent.com/difiore/ada-2024-datasets/main/zombies.csv"
+zombies <- read_csv(f, col_names = TRUE)
+usethis::use_data(zombies, overwrite = TRUE)
+# overwrite argument replaces the data if it already exists
+
+# method 2
+save(zombies, file = "data/zombies.RData")
+```
+
+
+## Final steps
+Once “.Rmd” file is completed, build (i.e., “knit”) your vignette
+```{r}
+# devtools::build_vignettes()
+```
+
+After creating your vignette, you should run `build()` again to bundle the vignette into your “.tar.gz” package file.
+```{r}
+# devtools::build()
 ```
