@@ -4,9 +4,17 @@
 \name{PCAmethod-package}
 \alias{PCAmethod}
 \alias{PCAmethod-package}
-\title{PCAmethod: Principle Component Analysis Package}
+\title{PCAmethod: Principal Component Analysis Package}
 \description{
-The function included in this package lets you explore... Use four spaces when indenting paragraphs within the Description.
+This module is used to build a package to run principal component analysis and visualization using an included dataset.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/ecarlson5683/PCAmethod}
+  \item Report bugs at \url{https://github.com/ecarlson5683/PCAmethod/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Erika Carlson \email{erika.carlson@utexas.edu} (\href{https://orcid.org/0000-0002-6638-6378}{ORCID})

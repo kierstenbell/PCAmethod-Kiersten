@@ -1,5 +1,5 @@
 ---
-title: "Principle Component Analysis"
+title: "Principal Component Analysis"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Principle Component Analysis}
@@ -55,19 +55,23 @@ library(PCAmethod)
 
 
 
-
-
-
 # Principal Component Analysis {.unnumbered}
 
 ## Objectives {.unnumbered}
 
-> This module provides an overview of how to ...
+> This module provides an overview of how to conduct a principal component analysis ...
 
+Steps
 
+* Add code to `PCAmethod()` function that runs a principal component analysis and associated visualization
+  + What arguments are required?
+  + What dependencies are required?
+* Write a module (vignette) explaining the PCAmethod function and how to use it
+  + Walk users through demonstrations of relevant analyses
+  + Also include METADATA for your package (e.g., info on dependencies, etc.)
+* Build the package and test, as detailed in Module 25
 
-
-## Custom dataset
+## Add a Data Directory and Data
 
 It is often useful to include example datasets in your ***R package*** to use in examples or vignettes or to illustrate a data format.
 
@@ -75,8 +79,7 @@ To include a dataset in your package, you would create a `data` subdirectory ins
 
 You can use the `use_data()` function from {use_this} to create the data directory and populate it with data from a dataframe.
 
-```{r}
-#| evaluate: false
+```{r, eval = FALSE}
 
 # method 1
 library(tidyverse)

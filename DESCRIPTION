@@ -1,6 +1,6 @@
 Package: PCAmethod
 Type: Package
-Title: Principle Component Analysis Package
+Title: Principal Component Analysis Package
 Version: 0.1.0
 Authors@R: 
     c(person(given = "Erika",
@@ -18,8 +18,8 @@ Authors@R:
            role = c("aut"),
            email = "manquen@utexas.edu",
            comment = c(ORCID = "")))
-Description: The function included in this package lets you explore...
-    Use four spaces when indenting paragraphs within the Description.
+Description: This module is used to build a package to run principal component 
+    analysis and visualization using an included dataset.
 Depends: R (>= 4.2)
 License: GPL-3
 Encoding: UTF-8
