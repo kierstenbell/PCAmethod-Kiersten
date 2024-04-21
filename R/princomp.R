@@ -3,7 +3,7 @@
 #' @description This function allows you to ...
 #'
 #' @param x a numeric matrix or data frame with data for PCA
-#' @param cor a logical value indicating whether the calculation should use the correlation matrix instead of the covariance matrix. Defaults to FALSE.
+#' @param cor a logical value indicating whether the calculation should use the correlation matrix instead of the covariance matrix. Can only use if there are no constant variables. Defaults to FALSE.
 #' @param scores a logical value indicating whether teh score on each principal component should be calculated. Defaults to TRUE.
 #' @param covmat a covariance matrix or list as returned by `cov.wt`. If TRUE, this is used rather than the covariance matrix of x.
 #' @param fix_sign a logical value indicating whether or not the signs of the loadings and scores should be chosen so that the first element of each loading is non-negative.
@@ -90,14 +90,18 @@ princomp.default <-
       cen <- covmat$center ## get centers
     } else stop("'covmat' is of unknown type") ## break if covmat input is neither null, list, nor matrix
     if(!is.numeric(cv)) stop("PCA applies only to numerical variables")
-    ## check if cor parameter selected
+    ## check if cor parameter selected.
     if (cor) {
-      sds <- sqrt(diag(cv)) ## standard deviations?
+      sds <- sqrt(diag(cv)) ## standard deviations of covariance??
+      ## cancels operation if there is a constant variable (sds=0) in dataset. Correlation cannot be used here.
       if(any(sds == 0))
         stop("cannot use 'cor = TRUE' with a constant variable")
-      cv <- cv/(sds %o% sds) ## %o% is the outer product of arrays
+      cv <- cv/(sds %o% sds) ## calculate covariance matrix. %o% is the outer product of arrays
     }
+    ## computes the eigenvalues and eigenvectors of numeric or complex matrices
+    ## inputs the covariance matrix `cv` calculated above
     edc <- eigen(cv, symmetric = TRUE)
+    ## extracts the eigenvalues
     ev <- edc$values
     if (any(neg <- ev < 0)) { # S-PLUS sets all := 0
       ## 9 * : on Solaris found case where 5.59 was needed (MM)
@@ -106,18 +110,27 @@ princomp.default <-
       else
         ev[neg] <- 0
     }
+    ## store the total number of principal components based on number of columns in covariance matrix
     cn <- paste0("Comp.", 1L:ncol(cv))
+    ## renames the eigenvalues with their corresponding principal component number
     names(ev) <- cn
+    ## rename eigenvectors if missing x ??
     dimnames(edc$vectors) <- if(missing(x))
       list(dimnames(cv)[[2L]], cn) else list(dimnames(x)[[2L]], cn)
+    ## standard deviations of the principal componenets (square root of eigenvalues)
     sdev <- sqrt(ev)
+    ## set scaling factor for the
     sc <- setNames(if (cor) sds else rep.int(1, ncol(cv)),
                    colnames(cv))
+    ## scale z by the scores if all conditions are TRUE
+    ## only will work if scores are given in original input
     scr <- if (scores && !missing(x) && !is.null(cen))
-      scale(z, center = cen, scale = sc) %*% edc$vectors
+      scale(z, center = cen, scale = sc) %*% edc$vectors  ## %*% multiplies the scaling matrix with the eigenvector matrix
+    ## add NAs to null centers
     if (is.null(cen)) cen <- rep(NA_real_, nrow(cv))
+    ## recompile the eigenvector (PCA) information
     edc <- list(sdev = sdev,
-                loadings = structure(edc$vectors, class="loadings"),
+                loadings = structure(edc$vectors, class="loadings"), ## loadings are the correlations between the component and the original variables; i.e., how much of the variation in a variable is explained by the component
                 center = cen, scale = sc, n.obs = n.obs,
                 scores = scr, call = cl)
     ## The Splus function also return list elements factor.sdev,
@@ -125,7 +138,7 @@ princomp.default <-
     ## coef seems to equal load.  The Splus function also returns list
     ## element terms which is not supported here.
     class(edc) <- "princomp"
-    edc
+    edc ##final return is the eigenvectors, now renamed
   }
 
 print.princomp <- function(x, ...)
