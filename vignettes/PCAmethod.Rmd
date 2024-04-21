@@ -2,7 +2,7 @@
 title: "Principal Component Analysis"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Principle Component Analysis}
+  %\VignetteIndexEntry{Principal Component Analysis}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -20,16 +20,11 @@ knitr::opts_chunk$set(
 library(PCAmethod)
 ```
 
-## Instructions
-
-* Prepare a **10-15 minute presentation** on this statistical method and data visualization, describing the purpose of the method and walk the class through examples/applications of its use using a publicly available dataset (e.g., from Kaggle, Google Dataset Search, Data.gov, etc.).
-* Develop an accompanying ***R*** package and HTML “vignette” taking a user through the method/workflow that will be shared through ***GitHub***.
-
 ### What to Do {.unnumbered}
 
-* Produce a ".qmd" file that will be the basis for a module *vignette* that you build and will bundle into a custom ***R*** package.
+* Produce a ".Rmd" file that will be the basis for a module *vignette* that you build and will bundle into a custom ***R*** package.
 * Include a background section on the *statistical method/topic/data visualization procedures*
-  + Explain the set of analyses either demonstrating the method being explored
+  + Explain the set of analyses demonstrating the method being explored
 * Organize similarly to class modules 
 * The presentation can be done from the module itself
 * Bundle the data you are working with into one or more included *datasets* 
@@ -81,19 +76,6 @@ This module was based on the following sources
 ### Requirements
 
 * All variables must be quantitative
-
-Steps
-
-* Add code to `PCAmethod()` function that runs a principal component analysis and associated visualization
-  + What arguments are required?
-  + What dependencies are required?
-    * {tidyverse}
-    * {ggplot}
-    * {}
-* Write a module (vignette) explaining the PCAmethod function and how to use it
-  + Walk users through demonstrations of relevant analyses
-  + Also include METADATA for your package (e.g., info on dependencies, etc.)
-* Build the package and test, as detailed in Module 25
 
 ## Principal Component Analysis {.unnumbered}
 
