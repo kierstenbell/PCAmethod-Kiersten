@@ -62,20 +62,26 @@ analysis (PCA). PCA is a statistical method used to compress high-dimensional
 the original data into a lower-dimensional space while collating highly 
 correlated variables together.
 
-Principal component analysis is a way to analyze and draw conclusions from more than three variables. For example, we could ask what makes a graduate student happy from a data set that includes age, gender, research progress, financial stability, personal growth, health, and recognition and validation. To draw conclusions from this data set, we need to visualize and analyze this data set. Visualizing in more than three dimensions is difficult, thus visualizing graduate student well-being data with seven variables (dimensions) cannot be done efficiently. PCAs take all factors (variables), combines them in a smart way, and produces new factors that are (1) correlated with each other and (2) ranked from most important to least important. The new factors produced by PCA are called **principal components**.
-How does a PCA pick its components?
+Principal component analysis is a way to analyze and draw conclusions from more than three variables. For example, we could ask what makes a graduate student happy from a data set that includes age, research progress, financial stability, personal growth, health, and recognition and validation. To draw conclusions from this data set, we need to visualize and analyze this data set. Visualizing in more than three dimensions is difficult, thus visualizing graduate student well-being data with six variables (dimensions) cannot be done efficiently. PCAs take all factors (variables), combines them in a smart way, and produces new factors that are (1) correlated with each other and  (2) ranked from most important to least important. The new factors produced by PCA are called **principal components**.  
 
-PCA asks the question "How can we arrange these data points in a line and preserve as much information as possible?" 
+#### How does a PCA pick its components? 
 
-This results in an optimization problem that tries to preserve as much information as possible.
+PCA asks the question "How can we arrange these data to preserve as much information as possible?" This results in an optimization problem using Lagrange Multipliers that collates the most contributory variables in order to preserve as much information as possible. More information about how to conduct below. 
+
+#### How to conduct a PCA? 
+1. Data normalization: Each variable must be *quantitative*. Data will be normalized by subtracting its mean and dividing by its standard deviation. 
+2. Covariance matrix: Compute a symmetric matrix generated from the covariance between the variables 
+3. Eigenvectors and eigenvalues: Eigenvector represents a direction such as "vertical" or "90 degrees". An eigenvalue, on the other hand, is a number representing the amount of variance present in the data for a given direction. Each eigenvector has its corresponding eigenvalue. 
+4. Selection of principal components. There are as many pairs of eigenvectors and eigenvalues as the number of variables in the data. In the data with age, research progress, financial stability, personal growth, health, and recognition and validation, there will be fifteen pairs; **not** all the pairs are relevant. So, the eigenvector with the highest eigenvalue corresponds to the first principal component. The second principal component is the eigenvector with the second highest eigenvalue, and so on.
+5.  Data transformation in new dimensional space: his step involves re-orienting the original data onto a new subspace defined by the principal components This reorientation is done by multiplying the original data by the previously computed eigenvectors.
+
+#### Applications for PCA 
+Principal component analysis has a variety of applications in our day-to-day life, including finance, image processing, healthcare, and security. In our personal research, PCAs are commonly used to better analyze/understand population clustering as well as genetic and behavioral analysis. 
 
 This module was based on the following sources
 
 * [Principal Component Analysis in R Tutorial](https://www.datacamp.com/tutorial/pca-analysis-r)
-
-### Requirements
-
-* All variables must be quantitative
+* [StatQuest: Principal Component Analysis(PCA), Step-by-Step](https://www.youtube.com/watch?v=FgakZw6K1QQ)
 
 ## Principal Component Analysis {.unnumbered}
 
