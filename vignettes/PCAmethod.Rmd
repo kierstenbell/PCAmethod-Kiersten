@@ -65,7 +65,14 @@ library(PCAmethod)
 analysis (PCA). PCA is a statistical method used to compress high-dimensional 
 (>3) data and retain the most informative aspects. This is done by transforming 
 the original data into a lower-dimensional space while collating highly 
-correlated variables together.   ...
+correlated variables together.
+
+Principal component analysis is a way to analyze and draw conclusions from more than three variables. For example, we could ask what makes a graduate student happy from a data set that includes age, gender, research progress, financial stability, personal growth, health, and recognition and validation. To draw conclusions from this data set, we need to visualize and analyze this data set. Visualizing in more than three dimensions is difficult, thus visualizing graduate student well-being data with seven variables (dimensions) cannot be done efficiently. PCAs take all factors (variables), combines them in a smart way, and produces new factors that are (1) correlated with each other and (2) ranked from most important to least important. The new factors produced by PCA are called **principal components**.
+How does a PCA pick its components?
+
+PCA asks the question "How can we arrange these data points in a line and preserve as much information as possible?" 
+
+This results in an optimization problem that tries to preserve as much information as possible.
 
 This module was based on the following sources
 
