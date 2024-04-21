@@ -91,7 +91,7 @@ library(ggplot2)
 head(music)
 ```
 
-### Clean the data
+### Step 1: Clean the data
 
 PCA only works with numerical values. So, we need to remove **Artist Name** and **Track Name** columns. Also, the **Class** column is not relevant to the analysis since it is refers to the genres themselves.
 
@@ -100,6 +100,18 @@ The code below creates a new data frame with only numeric columns.
 ```{r}
 music_clean <- music %>% tidyverse::select(-"Artist Name", -"Track Name", -"Class")
 ```
+
+### `princomp` function 
+
+`princomp()` performs a principal components analysis on the given numeric data matrix and returns the results as an object of class princomp. It contains the arguments: formula, data, subset, na.action, x, cor, scores, covmat, fix_sign, object, newdata
+
+
+```{r}
+
+```
+
+
+
 
 ## Add a Data Directory and Data
 
