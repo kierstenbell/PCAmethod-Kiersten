@@ -88,13 +88,25 @@ Steps
   + Also include METADATA for your package (e.g., info on dependencies, etc.)
 * Build the package and test, as detailed in Module 25
 
+## Principal Component Analysis {.unnumbered}
+
+Here, we created a package for Principal Component Analysis (PCA) using existing functions.
+
+The following code uses the **music** dataset bundled in the {} package to run a principal component analysis of **Popularity**, **danceability**, **energy**, **key**, **loudness**, **mode**, **speechiness**, **acousticness**, **instrumentalness**, **liveness**, **valence**, **tempo**, **duration_in min/ms**, **time_signature**, **Class**. Which variables contribute the most to the model?
+ 
+```{r, eval = FALSE}
+library(tidyverse)
+library(ggplot2)
+head(music)
+
+# PCA function
+
+# plot function
+```
+
 ## Add a Data Directory and Data
 
-It is often useful to include example datasets in your ***R package*** to use in examples or vignettes or to illustrate a data format.
-
-To include a dataset in your package, you would create a `data` subdirectory inside of the package directory and place your dataset there, in “.RData” format (using the extension “.RData” or “.rda”).
-
-You can use the `use_data()` function from {use_this} to create the data directory and populate it with data from a dataframe.
+The **music** dataset is used for example purposes. It is derived from the [music-genre-classification train.csv](https://www.kaggle.com/datasets/purumalgi/music-genre-classification/data?select=train.csv) dataset in ***Kaggle*** and was created during a **MachineHack Hackathon**. The dataset includes 17,996 songs with 17 metrics (artist name; track name; popularity; ‘danceability’; energy; key; loudness; mode; ‘speechiness’; ‘acousticness’; ‘instrumentalness’; liveness; valence; tempo; duration in milliseconds and time_signature).  **Class** is the target variable (genre) ranging from 0-11 and indicating Rock, Indie, Alt, Pop, Metal, HipHop, Alt_Music, Blues, Acoustic/Folk, Instrumental, Country, or Bollywood.
 
 ```{r, eval = FALSE}
 library(tidyverse)
@@ -102,16 +114,4 @@ f <- "data/music.csv"
 music <- read_csv(f, col_names = TRUE)
 usethis::use_data(music, overwrite = TRUE)
 # overwrite argument replaces the data if it already exists
-```
-
-
-## Final steps
-Once “.Rmd” file is completed, build (i.e., “knit”) your vignette
-```{r}
-# devtools::build_vignettes()
-```
-
-After creating your vignette, you should run `build()` again to bundle the vignette into your “.tar.gz” package file.
-```{r}
-# devtools::build()
 ```
