@@ -81,21 +81,29 @@ This module was based on the following sources
 
 Here, we created a package for Principal Component Analysis (PCA) using existing functions.
 
-The following code uses the **music** dataset bundled in the {} package to run a principal component analysis of **Popularity**, **danceability**, **energy**, **key**, **loudness**, **mode**, **speechiness**, **acousticness**, **instrumentalness**, **liveness**, **valence**, **tempo**, **duration_in min/ms**, **time_signature**, **Class**. Which variables contribute the most to the model?
+The following code uses the **music** dataset bundled in the {} package to run a principal component analysis of **Popularity**, **danceability**, **energy**, **key**, **loudness**, **mode**, **speechiness**, **acousticness**, **instrumentalness**, **liveness**, **valence**, **tempo**, **duration_in min/ms**, **time_signature**. 
+
+How much of the variance in the data set is explained by PC1? By PC2? Which variables contribute to PC1 (and explaining the greatest amount of variance)? 
  
 ```{r, eval = FALSE}
 library(tidyverse)
 library(ggplot2)
 head(music)
+```
 
-# PCA function
+### Clean the data
 
-# plot function
+PCA only works with numerical values. So, we need to remove **Artist Name** and **Track Name** columns. Also, the **Class** column is not relevant to the analysis since it is refers to the genres themselves.
+
+The code below creates a new data frame with only numeric columns.
+
+```{r}
+music_clean <- music %>% tidyverse::select(-"Artist Name", -"Track Name", -"Class")
 ```
 
 ## Add a Data Directory and Data
 
-The **music** dataset is used for example purposes. It is derived from the [music-genre-classification train.csv](https://www.kaggle.com/datasets/purumalgi/music-genre-classification/data?select=train.csv) dataset in ***Kaggle*** and was created during a **MachineHack Hackathon**. The dataset includes 17,996 songs with 17 metrics (artist name; track name; popularity; ‘danceability’; energy; key; loudness; mode; ‘speechiness’; ‘acousticness’; ‘instrumentalness’; liveness; valence; tempo; duration in milliseconds and time_signature).  **Class** is the target variable (genre) ranging from 0-11 and indicating Rock, Indie, Alt, Pop, Metal, HipHop, Alt_Music, Blues, Acoustic/Folk, Instrumental, Country, or Bollywood.
+The **music** dataset is used for example purposes. It is derived from the [music-genre-classification train.csv](https://www.kaggle.com/datasets/purumalgi/music-genre-classification/data?select=train.csv) dataset in ***Kaggle*** and was created during a **MachineHack Hackathon**. The dataset includes 17,996 songs with 17 metrics (artist name; track name; popularity; ‘danceability’; energy; key; loudness; mode; ‘speechiness’; ‘acousticness’; ‘instrumentalness’; liveness; valence; tempo; duration in milliseconds and time_signature). **Class** is the target variable (genre) ranging from 0-11 and indicating Rock, Indie, Alt, Pop, Metal, HipHop, Alt_Music, Blues, Acoustic/Folk, Instrumental, Country, or Bollywood.
 
 ```{r, eval = FALSE}
 library(tidyverse)
