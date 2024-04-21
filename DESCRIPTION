@@ -12,7 +12,7 @@ Authors@R:
            family = "Bell",
            role = c("aut"),
            email = "kierstenbell@utexas.edu",
-           comment = c(ORCID = "")),
+           comment = c(ORCID = "0000-0002-2073-9342")),
       person(given = "Brody",
            family = "Manquen",
            role = c("aut"),
