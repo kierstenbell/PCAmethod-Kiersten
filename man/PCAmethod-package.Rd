@@ -21,7 +21,7 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Kiersten Bell \email{kierstenbell@utexas.edu}
+  \item Kiersten Bell \email{kierstenbell@utexas.edu} (\href{https://orcid.org/0000-0002-2073-9342}{ORCID})
   \item Brody Manquen \email{manquen@utexas.edu}
 }
 

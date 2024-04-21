@@ -97,17 +97,16 @@ PCA only works with numerical values. So, we need to remove **Artist Name** and 
 
 The code below creates a new data frame with only numeric columns.
 
-```{r}
+```{r, eval = FALSE}
 music_clean <- music %>% tidyverse::select(-"Artist Name", -"Track Name", -"Class")
 ```
 
 ### `princomp` function 
 
-`princomp()` performs a principal components analysis on the given numeric data matrix and returns the results as an object of class princomp. It contains the arguments: formula, data, subset, na.action, x, cor, scores, covmat, fix_sign, object, newdata
-
+`princomp()` performs a principal components analysis on the given numeric data matrix, passed in as argument x, and returns the results as an object of class princomp.
 
 ```{r}
-
+princomp(x = as.matrix(music_clean))
 ```
 
 
