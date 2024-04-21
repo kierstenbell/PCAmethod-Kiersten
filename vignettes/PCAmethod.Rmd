@@ -2,7 +2,7 @@
 title: "Principal Component Analysis"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Principle Component Analysis}
+  %\VignetteIndexEntry{Principal Component Analysis}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -20,16 +20,11 @@ knitr::opts_chunk$set(
 library(PCAmethod)
 ```
 
-## Instructions
-
-* Prepare a **10-15 minute presentation** on this statistical method and data visualization, describing the purpose of the method and walk the class through examples/applications of its use using a publicly available dataset (e.g., from Kaggle, Google Dataset Search, Data.gov, etc.).
-* Develop an accompanying ***R*** package and HTML “vignette” taking a user through the method/workflow that will be shared through ***GitHub***.
-
 ### What to Do {.unnumbered}
 
-* Produce a ".qmd" file that will be the basis for a module *vignette* that you build and will bundle into a custom ***R*** package.
+* Produce a ".Rmd" file that will be the basis for a module *vignette* that you build and will bundle into a custom ***R*** package.
 * Include a background section on the *statistical method/topic/data visualization procedures*
-  + Explain the set of analyses either demonstrating the method being explored
+  + Explain the set of analyses demonstrating the method being explored
 * Organize similarly to class modules 
 * The presentation can be done from the module itself
 * Bundle the data you are working with into one or more included *datasets* 
@@ -65,7 +60,14 @@ library(PCAmethod)
 analysis (PCA). PCA is a statistical method used to compress high-dimensional 
 (>3) data and retain the most informative aspects. This is done by transforming 
 the original data into a lower-dimensional space while collating highly 
-correlated variables together.   ...
+correlated variables together.
+
+Principal component analysis is a way to analyze and draw conclusions from more than three variables. For example, we could ask what makes a graduate student happy from a data set that includes age, gender, research progress, financial stability, personal growth, health, and recognition and validation. To draw conclusions from this data set, we need to visualize and analyze this data set. Visualizing in more than three dimensions is difficult, thus visualizing graduate student well-being data with seven variables (dimensions) cannot be done efficiently. PCAs take all factors (variables), combines them in a smart way, and produces new factors that are (1) correlated with each other and (2) ranked from most important to least important. The new factors produced by PCA are called **principal components**.
+How does a PCA pick its components?
+
+PCA asks the question "How can we arrange these data points in a line and preserve as much information as possible?" 
+
+This results in an optimization problem that tries to preserve as much information as possible.
 
 This module was based on the following sources
 
@@ -75,38 +77,33 @@ This module was based on the following sources
 
 * All variables must be quantitative
 
-Steps
-
-* Add code to `PCAmethod()` function that runs a principal component analysis and associated visualization
-  + What arguments are required?
-  + What dependencies are required?
-    * {tidyverse}
-    * {ggplot}
-    * {}
-* Write a module (vignette) explaining the PCAmethod function and how to use it
-  + Walk users through demonstrations of relevant analyses
-  + Also include METADATA for your package (e.g., info on dependencies, etc.)
-* Build the package and test, as detailed in Module 25
-
 ## Principal Component Analysis {.unnumbered}
 
 Here, we created a package for Principal Component Analysis (PCA) using existing functions.
 
-The following code uses the **music** dataset bundled in the {} package to run a principal component analysis of **Popularity**, **danceability**, **energy**, **key**, **loudness**, **mode**, **speechiness**, **acousticness**, **instrumentalness**, **liveness**, **valence**, **tempo**, **duration_in min/ms**, **time_signature**, **Class**. Which variables contribute the most to the model?
+The following code uses the **music** dataset bundled in the {} package to run a principal component analysis of **Popularity**, **danceability**, **energy**, **key**, **loudness**, **mode**, **speechiness**, **acousticness**, **instrumentalness**, **liveness**, **valence**, **tempo**, **duration_in min/ms**, **time_signature**. 
+
+How much of the variance in the data set is explained by PC1? By PC2? Which variables contribute to PC1 (and explaining the greatest amount of variance)? 
  
 ```{r, eval = FALSE}
 library(tidyverse)
 library(ggplot2)
 head(music)
+```
 
-# PCA function
+### Clean the data
 
-# plot function
+PCA only works with numerical values. So, we need to remove **Artist Name** and **Track Name** columns. Also, the **Class** column is not relevant to the analysis since it is refers to the genres themselves.
+
+The code below creates a new data frame with only numeric columns.
+
+```{r}
+music_clean <- music %>% tidyverse::select(-"Artist Name", -"Track Name", -"Class")
 ```
 
 ## Add a Data Directory and Data
 
-The **music** dataset is used for example purposes. It is derived from the [music-genre-classification train.csv](https://www.kaggle.com/datasets/purumalgi/music-genre-classification/data?select=train.csv) dataset in ***Kaggle*** and was created during a **MachineHack Hackathon**. The dataset includes 17,996 songs with 17 metrics (artist name; track name; popularity; ‘danceability’; energy; key; loudness; mode; ‘speechiness’; ‘acousticness’; ‘instrumentalness’; liveness; valence; tempo; duration in milliseconds and time_signature).  **Class** is the target variable (genre) ranging from 0-11 and indicating Rock, Indie, Alt, Pop, Metal, HipHop, Alt_Music, Blues, Acoustic/Folk, Instrumental, Country, or Bollywood.
+The **music** dataset is used for example purposes. It is derived from the [music-genre-classification train.csv](https://www.kaggle.com/datasets/purumalgi/music-genre-classification/data?select=train.csv) dataset in ***Kaggle*** and was created during a **MachineHack Hackathon**. The dataset includes 17,996 songs with 17 metrics (artist name; track name; popularity; ‘danceability’; energy; key; loudness; mode; ‘speechiness’; ‘acousticness’; ‘instrumentalness’; liveness; valence; tempo; duration in milliseconds and time_signature). **Class** is the target variable (genre) ranging from 0-11 and indicating Rock, Indie, Alt, Pop, Metal, HipHop, Alt_Music, Blues, Acoustic/Folk, Instrumental, Country, or Bollywood.
 
 ```{r, eval = FALSE}
 library(tidyverse)
