@@ -7,52 +7,13 @@
 #' @param scores a logical value indicating whether teh score on each principal component should be calculated. Defaults to TRUE.
 #' @param covmat a covariance matrix or list as returned by `cov.wt`. If TRUE, this is used rather than the covariance matrix of x.
 #' @param fix_sign a logical value indicating whether or not the signs of the loadings and scores should be chosen so that the first element of each loading is non-negative.
-#' @param formula a formula with no response variable, referring only to numeric variables
-#' @param data an optional data frame containing the variables in the formula `formula`. By default the variables are taken from environment(formula)
 #' @param subset an optional vector used to select rows (observations) of the data matrix `x`
-#' @param na.action a function which indicates what should happen when the data contains NAs. The default is set by the `na.action` setting of `options` and is `na.fail` if that is unset. The 'factory-fresh' default is `na.omit`.
-#' @param ... arguments passed to or from other methods. If `x` is a formula one might specify `cor` or `scores`
-#' @param object Object of class inheriting from "princomp"
-#' @newdata an optional data frame or matrix in which to look for variables with which to predict. If omitted, the scores are used. If the original fit used a formula or a data frame ora a matrix with column names, `newdata` must contain columns with the same names. Otherwise, it must contain the same number of columns to be used in the same order.
-# @keywords
-# @export
-# @examples
-#
+#' @keywords pca
+#' @export
+#' @examples
+#' princomp(x = music_clean)
 
-princomp <- function(x, ...) UseMethod("princomp")
-
-## use formula to allow update() to be used.
-princomp.formula <- function(formula, data = NULL, subset, na.action, ...)
-{
-  mt <- terms(formula, data = data)
-  if(attr(mt, "response") > 0) stop("response not allowed in formula")
-  cl <- match.call()
-  mf <- match.call(expand.dots = FALSE)
-  mf$... <- NULL
-  ## need stats:: for non-standard evaluation
-  mf[[1L]] <- quote(stats::model.frame)
-  mf <- eval.parent(mf)
-  ## this is not a `standard' model-fitting function,
-  ## so no need to consider contrasts or levels
-  if (.check_vars_numeric(mf))
-    stop("PCA applies only to numerical variables")
-  na.act <- attr(mf, "na.action")
-  mt <- attr(mf, "terms") # allow model.frame to update it
-  attr(mt, "intercept") <- 0
-  x <- model.matrix(mt, mf)
-  res <- princomp.default(x, ...)
-  ## fix up call to refer to the generic, but leave arg name as `formula'
-  cl[[1L]] <- as.name("princomp")
-  res$call <- cl
-  if(!is.null(na.act)) {
-    res$na.action <- na.act # not currently used
-    if(!is.null(sc <- res$scores))
-      res$scores <- napredict(na.act, sc)
-  }
-  res
-}
-
-princomp.default <-
+princomp <-
   function(x, cor = FALSE, scores = TRUE, covmat = NULL,
            subset = rep_len(TRUE, nrow(as.matrix(x))), ...) #default subset is the whole matrix.
   {

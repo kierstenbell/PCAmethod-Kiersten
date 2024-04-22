@@ -4,12 +4,17 @@
 \alias{princomp}
 \title{An interactive principle component analysis function}
 \usage{
-princomp(x, ...)
+princomp(
+  x,
+  cor = FALSE,
+  scores = TRUE,
+  covmat = NULL,
+  subset = rep_len(TRUE, nrow(as.matrix(x))),
+  ...
+)
 }
 \arguments{
 \item{x}{a numeric matrix or data frame with data for PCA}
-
-\item{...}{arguments passed to or from other methods. If `x` is a formula one might specify `cor` or `scores`}
 
 \item{cor}{a logical value indicating whether the calculation should use the correlation matrix instead of the covariance matrix. Can only use if there are no constant variables. Defaults to FALSE.}
 
@@ -17,18 +22,14 @@ princomp(x, ...)
 
 \item{covmat}{a covariance matrix or list as returned by `cov.wt`. If TRUE, this is used rather than the covariance matrix of x.}
 
-\item{fix_sign}{a logical value indicating whether or not the signs of the loadings and scores should be chosen so that the first element of each loading is non-negative.}
-
-\item{formula}{a formula with no response variable, referring only to numeric variables}
-
-\item{data}{an optional data frame containing the variables in the formula `formula`. By default the variables are taken from environment(formula)}
-
 \item{subset}{an optional vector used to select rows (observations) of the data matrix `x`}
 
-\item{na.action}{a function which indicates what should happen when the data contains NAs. The default is set by the `na.action` setting of `options` and is `na.fail` if that is unset. The 'factory-fresh' default is `na.omit`.}
-
-\item{object}{Object of class inheriting from "princomp"}
+\item{fix_sign}{a logical value indicating whether or not the signs of the loadings and scores should be chosen so that the first element of each loading is non-negative.}
 }
 \description{
 This function allows you to ...
 }
+\examples{
+princomp(x = music_clean)
+}
+\keyword{pca}
