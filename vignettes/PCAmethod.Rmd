@@ -101,21 +101,28 @@ head(music)
 
 PCA only works with numerical values. So, we need to remove **Artist Name** and **Track Name** columns. Also, the **Class** column is not relevant to the analysis since it is refers to the genres themselves.
 
-The code below creates a new data frame with only numeric columns.
+The code below creates a new data frame with only numeric columns. It also removes rows (songs) containing NA values
 
 ```{r, eval = FALSE}
-music_clean <- music %>% tidyverse::select(-"Artist Name", -"Track Name", -"Class")
+music_clean <- music |> dplyr::select(-"Artist Name", -"Track Name", -"Class") |> tidyr::drop_na()
 ```
 
-### `princomp` function 
+### Step 2: Use `princomp` function to run PCA
 
 `princomp()` performs a principal components analysis on the given numeric data matrix, passed in as argument x, and returns the results as an object of class princomp.
 
-```{r}
-princomp(x = as.matrix(music_clean))
+```{r, eval = FALSE}
+princomp(x = music_clean)
 ```
 
+### Step 3: Use `autoplot_pca` function to visualize PCA
 
+`autoplot_pca()` takes the following arguments [1] an `object` returned by a function performing PCA, [2] a `mapping` call to `aes()` specifying additional mappings between variables and plot aesthetics, [3] `data` the data frame associated with the PCA, and returns a ggplot2 object.
+
+```{r, eval = FALSE}
+autoplot_pca(object = princomp, data = music_clean)
+# need to edit autoplot_pca.R file to call `ggplot2::`
+```
 
 
 ## Add a Data Directory and Data
