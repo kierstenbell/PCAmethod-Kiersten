@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 library(PCAmethod)
 ```
 
-### What to Do {.unnumbered} Hi
+### What to Do {.unnumbered}
 
 * Produce a ".Rmd" file that will be the basis for a module *vignette* that you build and will bundle into a custom ***R*** package.
 * Include a background section on the *statistical method/topic/data visualization procedures*
