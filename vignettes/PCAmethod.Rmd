@@ -111,6 +111,8 @@ music_clean <- music |> dplyr::select(-"Artist Name", -"Track Name", -"Class") |
 
 `princomp()` performs a principal components analysis on the given numeric data matrix, passed in as argument x, and returns the results as an object of class princomp.
 
+<cite source>
+
 ```{r, eval = FALSE}
 princomp(x = music_clean)
 ```
@@ -118,6 +120,9 @@ princomp(x = music_clean)
 ### Step 3: Use `autoplot_pca` function to visualize PCA
 
 `autoplot_pca()` takes the following arguments [1] an `object` returned by a function performing PCA, [2] a `mapping` call to `aes()` specifying additional mappings between variables and plot aesthetics, [3] `data` the data frame associated with the PCA, and returns a ggplot2 object.
+
+<cite source>
+citation("package")
 
 ```{r, eval = FALSE}
 autoplot_pca(object = princomp, data = music_clean)
