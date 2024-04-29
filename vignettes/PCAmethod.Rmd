@@ -1,5 +1,5 @@
 ---
-title: "Principal Component Analysis"
+title: "PCAmethod: Principal Component Analysis"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Principal Component Analysis}
@@ -10,11 +10,8 @@ editor_options:
 ---
 
 ```{r, include = FALSE}
-#knitr::opts_chunk$set(
- # collapse = FALSE,
- # comment = "#>"
-#)
-knitr::opts_chunk$set(collapse=TRUE, comment="#>", echo = TRUE, fig.width = 8, fig.height = 8)
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", echo = TRUE, 
+                      fig.width = 8, fig.height = 8)
 ```
 
 ```{r setup}
@@ -57,7 +54,6 @@ lifespan can be condensed down to 5 principal components.
 <div style="text-align: center;">
 <img src="https://github.com/ecarlson5683/PCAmethod/blob/main/pics/Fig1.png?raw=true" width="75%" height="75%">
 </div>
-
 
 #### How does a PCA pick its components? 
 
@@ -107,6 +103,7 @@ scales. The unit scale (mean=0 and variance=1) is useful for standardization,
 and requires subtracting the mean and dividing by the standard deviation from 
 individual observations of a given variable. 
 $$\hat{x} = \frac{x_i - \bar{x}}{s}$$
+
 2. **Covariance matrix:** Compute a symmetric matrix ($d × d$) generated from 
 the covariance, a measure of the total variation of two random variables from 
 their expected values, between all pairs of variables. The covariance between 
@@ -117,11 +114,13 @@ $$\sum =  \frac{1}{n−1}((X − \bar{x})^T(X − \bar{x}))$$
 where $\bar{x}$ is the mean vector $$\bar{x} = \frac{1}{n} \sum^{n}_{i=1}x_i$$
 The mean vector is a $d$-dimensional vector where each value in this vector 
 represents the sample mean of a feature column in the data set.
+
 3. **Eigenvectors and eigenvalues:** An **eigenvector** represents a direction 
 such as "vertical" or "90 degrees". An **eigenvalue**, on the other hand, is a 
 number representing the amount of variance present in the data for a given 
 direction. Each eigenvector has its corresponding eigenvalue, which determine 
 the direction and magnitude of the new feature space.
+
 4. **Selection of principal components:** There are as many pairs of 
 eigenvectors and eigenvalues as the number of variables in the data. In the 
 data with lifespan, **not** all the pairs are relevant. So, the eigenvector 
@@ -130,6 +129,7 @@ The second principal component (PC2) is the eigenvector with the second highest
 eigenvalue, and so on. The eigenvectors with the lowest eigenvalues bear the 
 least information about the distribution of the data; those are the ones that 
 can be dropped.
+
 5.  **Construction of the projection matrix:** This step involves re-orienting 
 the original multi-dimensional data onto a new 2-dimensional subspace defined 
 by the "top 2" principal components. This reorientation is done by multiplying 
