@@ -49,7 +49,7 @@ data set that includes over 200 variables. To draw conclusions about human
 longevity, we first need to visualize and analyze this data set. Visualizing in 
 more than three dimensions is difficult, thus visualizing human lifespan with 
 200 variables (dimensions) cannot be done. PCAs take all factors (variables), 
-combines them in a smart way, and produces new factors that are [1] correlated 
+combine them in a smart way, and produce new factors that are [1] correlated 
 with each other and [2] ranked from most important to least important. The new 
 factors produced by PCA are called **principal components**. Principal component 
 1 (PC1) explains the greatest amount of the data set, followed by principal 
