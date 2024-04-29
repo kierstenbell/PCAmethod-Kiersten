@@ -9,7 +9,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Principal Component Analysis {.unnumbered}
+
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
