@@ -10,10 +10,11 @@ editor_options:
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+#knitr::opts_chunk$set(
+ # collapse = FALSE,
+ # comment = "#>"
+#)
+knitr::opts_chunk$set(collapse=TRUE, comment="#>", echo = TRUE, fig.width = 8, fig.height = 8)
 ```
 
 ```{r setup}
@@ -269,21 +270,95 @@ levels(music_clean$Class) <- c("Rock", "Indie", "Alt", "Pop", "Metal", "Hip Hop"
 
 Without grouping, we only see the axes of variation represented by PC1 and PC2. 
 Some trends are visible, such as "acousticness" and "energy" moving in 
-opposite directions. 
+opposite directions. The circle captures 95% of all data points.
 
 ```{r}
-ggbiplot(pc, var.scale = 1, point.size=1, alpha=0.05, ellipse = TRUE, circle = TRUE)
+p <- ggbiplot(pc, var.scale = 1, point.size=1, alpha=0.05, ellipse = TRUE, circle = TRUE) + ggtitle("PCA of Song Variables") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_minimal() +
+  theme(panel.background = element_blank(), 
+  panel.grid.major = element_blank(), 
+  panel.grid.minor = element_blank(),
+  panel.border = element_blank()) + 
+  theme(axis.line.x = element_line(color="black", linewidth = 0.8),
+  axis.line.y = element_line(color="black", linewidth = 0.8)) 
+p
 ```
 
 Grouping by Genre (**Class**), we see much clearer clusters. While most genres 
 overlap around the origin, some distinctions are possible. For example, the 
-Blues and Acoustic/Folk genres stand out fairly well.  
+Blues and Acoustic/Folk genres stand out fairly well. Ellipses capture 95% of data points for each group.
+
 ```{r}
-ggbiplot(pc, var.scale = 1, point.size=1, alpha=0.05, groups=music_clean$Class, ellipse = TRUE, circle = TRUE) + labs(fill = "Genre", color="Genre")
+ggbiplot(pc, var.scale = 1, varname.adjust = 1.2, point.size=1, alpha=0.05, groups=music_clean$Class, ellipse = TRUE, ellipse.linewidth = 0.5, ellipse.alpha = 0.1, circle = TRUE, varname.color = "darkred") + labs(fill = "Genre", color="Genre") + 
+  ggtitle("PCA of Song Variables") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_minimal() +
+  theme(panel.background = element_blank(), 
+  panel.grid.major = element_blank(), 
+  panel.grid.minor = element_blank(),
+  panel.border = element_blank()) + 
+  theme(axis.line.x = element_line(color="black", linewidth = 0.8),
+  axis.line.y = element_line(color="black", linewidth = 0.8)) 
 ```
 
 How much of the variance in the data set is explained by PC1? By PC2? Which 
 variables contribute to PC1 (and explain the greatest amount of variance)? 
+
+We can also specify which PCs we plot using the `choices` argument. Below, PC 2 and 3 are selected. Clusters are far less apparent.
+```{r}
+ggbiplot(pc, var.scale = 1, choices=2:3, varname.adjust = 1.2, point.size=1, alpha=0.05, groups=music_clean$Class, ellipse = TRUE, ellipse.linewidth = 0.5, ellipse.alpha = 0.1, circle = TRUE, varname.color = "darkred") + labs(fill = "Genre", color="Genre") +
+  ggtitle("PCA of Song Variables") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_minimal() +
+  theme(panel.background = element_blank(), 
+  panel.grid.major = element_blank(), 
+  panel.grid.minor = element_blank(),
+  panel.border = element_blank()) + 
+  theme(axis.line.x = element_line(color="black", linewidth = 0.8),
+  axis.line.y = element_line(color="black", linewidth = 0.8)) 
+```
+And here is PC 3 vs PC 4. Note that the difference in proportion of variation is starting to become quite small.
+```{r}
+ggbiplot(pc, var.scale = 1, choices=3:4, varname.adjust = 1.2, point.size=1, alpha=0.05, groups=music_clean$Class, ellipse = TRUE, ellipse.linewidth = 0.5, ellipse.alpha = 0.1, circle = TRUE, varname.color = "darkred") + labs(fill = "Genre", color="Genre") + 
+  ggtitle("PCA of Song Variables") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_minimal() +
+  theme(panel.background = element_blank(), 
+  panel.grid.major = element_blank(), 
+  panel.grid.minor = element_blank(),
+  panel.border = element_blank()) + 
+  theme(axis.line.x = element_line(color="black", linewidth = 0.8),
+  axis.line.y = element_line(color="black", linewidth = 0.8)) 
+```
+
+Here are the final two PCs, which make up only 3.3% of the total variation. 
+```{r}
+ggbiplot(pc, var.scale = 1, choices=13:14, varname.adjust = 1.2, point.size=1, alpha=0.05, groups=music_clean$Class, ellipse = TRUE, ellipse.linewidth = 0.5, ellipse.alpha = 0.1, circle = TRUE, varname.color = "darkred") + labs(fill = "Genre", color="Genre") + 
+  ggtitle("PCA of Song Variables") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_minimal() +
+  theme(panel.background = element_blank(), 
+  panel.grid.major = element_blank(), 
+  panel.grid.minor = element_blank(),
+  panel.border = element_blank()) + 
+  theme(axis.line.x = element_line(color="black", linewidth = 0.8),
+  axis.line.y = element_line(color="black", linewidth = 0.8)) 
+```
+
+Finally, we can display PC1 against PC14. Here, we can see that the axes are nearly all horizontal due to the large difference in variation explained by PC1 compared to PC14. 
+```{r}
+ggbiplot(pc, var.scale = 1, choices=c(1, 14), varname.adjust = 1.2, point.size=1, alpha=0.05, groups=music_clean$Class, ellipse = TRUE, ellipse.linewidth = 0.5, ellipse.alpha = 0.1, circle = TRUE, varname.color = "darkred") + labs(fill = "Genre", color="Genre") + 
+  ggtitle("PCA of Song Variables") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_minimal() +
+  theme(panel.background = element_blank(), 
+  panel.grid.major = element_blank(), 
+  panel.grid.minor = element_blank(),
+  panel.border = element_blank()) + 
+  theme(axis.line.x = element_line(color="black", linewidth = 0.8),
+  axis.line.y = element_line(color="black", linewidth = 0.8)) 
+```
 
 ## Add a Data Directory and Data
 
