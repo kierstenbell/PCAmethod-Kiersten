@@ -209,7 +209,7 @@ removes rows (songs) containing NA values
 
 ```{r}
 music_clean <- music |> select(-"Artist Name", -"Track Name") |> drop_na()
-head(music)
+head(music_clean)
 ```
 
 ### Use `princomp` function to run PCA
