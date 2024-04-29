@@ -9,6 +9,8 @@ editor_options:
   chunk_output_type: console
 ---
 
+# Principal Component Analysis {.unnumbered}
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -16,84 +18,60 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, eval = FALSE}
+```{r setup}
 library(PCAmethod)
 ```
 
-### What to Do {.unnumbered}
+## Overview {.unnumbered}
 
-* Produce a ".Rmd" file that will be the basis for a module *vignette* that you build and will bundle into a custom ***R*** package.
-* Include a background section on the *statistical method/topic/data visualization procedures*
-  + Explain the set of analyses demonstrating the method being explored
-* Organize similarly to class modules 
-* The presentation can be done from the module itself
-* Bundle the data you are working with into one or more included *datasets* 
-* Bundle code for least two *functions* that are called in the vignette. 
-* The functions you include can be custom functions that you create, but it is also perfectly fine to use functions that you have copied from other packages and include into your own package. 
-* The important thing is that you are bundling them together with your dataset and vignette for easy distribution. 
-* You will want to create your own documentation for each function, as discussed in [**Module 25**](#module-25) on custom package development. 
-* We are learning how to distribute shared data and code to other researchers.
-
-### What to Turn In {.unnumbered}
-
-* A 10-15 min presentation
-* A custom **R package** that can be shared as a single file and loaded into an ***R*** workspace (e.g., using the `install.packages()` function). The package should contain:
-  + A set of functions and associated function documentation.
-  + One or more relevant datasets (simulated or, preferably, real data), that you use in a module vignette about your chosen topic,
-  + A vignette that walks users through demonstrations of relevant analyses,
-  + Appropriate METADATA for your package (e.g., information on dependencies, etc.),
-
-> **NOTE:** [**Module 25**](#module-25) takes the user through all of the step of package development, so use it as a resource! We will work through this module during our 2nd to last class.
-
-* One group member uploads the final **R Package**'s bundled ".gz.tar" file to **Canvas**
-* All group members share the repository ***GitHub*** URL to **Canvas**.
-
-> **NOTE:** Tony should be able to CLONE the repository and see all of the components associated with the package development.
-
-
-
-# Principal Component Analysis {.unnumbered}
-
-## Objectives {.unnumbered}
-
-> This module provides an overview of how to conduct a principal component 
+This vignette provides an overview of how to conduct a principal component 
 analysis (PCA). PCA is a statistical method used to compress high-dimensional 
 (>3) data and retain the most informative aspects. This is done by transforming 
 the original data into a lower-dimensional space while collating highly 
 correlated variables together.
 
-Principal component analysis is a way to analyze and draw conclusions from more than three variables. For example, we could ask what makes a graduate student happy from a data set that includes age, research progress, financial stability, personal growth, health, and recognition and validation. To draw conclusions from this data set, we need to visualize and analyze this data set. Visualizing in more than three dimensions is difficult, thus visualizing graduate student well-being data with six variables (dimensions) cannot be done efficiently. PCAs take all factors (variables), combines them in a smart way, and produces new factors that are (1) correlated with each other and  (2) ranked from most important to least important. The new factors produced by PCA are called **principal components**.  
+## Introduction {.unnumbered}
+
+Principal component analysis is a way to analyze and draw conclusions from more than three variables. For example, we could ask what contributes to graduate student well-being from a data set that includes age, research progress, financial stability, personal growth, health, and recognition/validation. To draw conclusions about graduate student well-being, we first need to visualize and analyze this data set. Visualizing in more than three dimensions is difficult, thus visualizing graduate student well-being data with six variables (dimensions) cannot be done efficiently. PCAs take all factors (variables), combines them in a smart way, and produces new factors that are (1) correlated with each other and (2) ranked from most important to least important. The new factors produced by PCA are called **principal components**.  
 
 #### How does a PCA pick its components? 
 
-PCA asks the question "How can we arrange these data to preserve as much information as possible?" This results in an optimization problem using Lagrange Multipliers that collates the most contributory variables in order to preserve as much information as possible. More information about how to conduct below. 
+PCA asks the question "How can we arrange these data to preserve as much information as possible?" This results in an optimization problem using Lagrange Multipliers that collates the most contributory variables in order to preserve as much information as possible.
 
-#### How to conduct a PCA? 
+#### How is a PCA conducted? 
+
 1. Data normalization: Each variable must be *quantitative*. Data will be normalized by subtracting its mean and dividing by its standard deviation. 
-2. Covariance matrix: Compute a symmetric matrix generated from the covariance between the variables 
+2. Covariance matrix: Compute a symmetric matrix generated from the covariance, a measure of the total variation of two random variables from their expected values, between all pairs of variables. 
 3. Eigenvectors and eigenvalues: Eigenvector represents a direction such as "vertical" or "90 degrees". An eigenvalue, on the other hand, is a number representing the amount of variance present in the data for a given direction. Each eigenvector has its corresponding eigenvalue. 
 4. Selection of principal components. There are as many pairs of eigenvectors and eigenvalues as the number of variables in the data. In the data with age, research progress, financial stability, personal growth, health, and recognition and validation, there will be fifteen pairs; **not** all the pairs are relevant. So, the eigenvector with the highest eigenvalue corresponds to the first principal component. The second principal component is the eigenvector with the second highest eigenvalue, and so on.
-5.  Data transformation in new dimensional space: his step involves re-orienting the original data onto a new subspace defined by the principal components This reorientation is done by multiplying the original data by the previously computed eigenvectors.
+5.  Data transformation in new dimensional space: this step involves re-orienting the original data onto a new subspace defined by the principal components This reorientation is done by multiplying the original data by the previously computed eigenvectors.
 
 #### Applications for PCA 
 Principal component analysis has a variety of applications in our day-to-day life, including finance, image processing, healthcare, and security. In our personal research, PCAs are commonly used to better analyze/understand population clustering as well as genetic and behavioral analysis. 
 
-This module was based on the following sources
+This vignette was based on the following sources
 
 * [Principal Component Analysis in R Tutorial](https://www.datacamp.com/tutorial/pca-analysis-r)
 * [StatQuest: Principal Component Analysis(PCA), Step-by-Step](https://www.youtube.com/watch?v=FgakZw6K1QQ)
 
-## Principal Component Analysis {.unnumbered}
+## Usage {.unnumbered}
 
 Here, we created a package for Principal Component Analysis (PCA) using existing functions.
 
-The following code uses the **music** dataset bundled in the {} package to run a principal component analysis of **Popularity**, **danceability**, **energy**, **key**, **loudness**, **mode**, **speechiness**, **acousticness**, **instrumentalness**, **liveness**, **valence**, **tempo**, **duration_in min/ms**, **time_signature**. 
+The following code uses the **music** dataset bundled in the {PCAmethod} package to run a principal component analysis of several variables that contribute to music genre. We can use PCA to determine which variables combine to explain the greatest amount of the variance in the data set. 
 
-How much of the variance in the data set is explained by PC1? By PC2? Which variables contribute to PC1 (and explaining the greatest amount of variance)? 
- 
-```{r, eval = FALSE}
+### Preliminaries
+
+The **music** dataset is derived from the [music-genre-classification train.csv](https://www.kaggle.com/datasets/purumalgi/music-genre-classification/data?select=train.csv) dataset in ***Kaggle*** and was created during a **MachineHack Hackathon**. The dataset includes 17,996 songs with 17 metrics (artist name; track name; popularity; ‘danceability’; energy; key; loudness; mode; ‘speechiness’; ‘acousticness’; ‘instrumentalness’; liveness; valence; tempo; duration in milliseconds and time_signature). **Class** is the target variable (genre) ranging from 0-11 and indicating Rock, Indie, Alt, Pop, Metal, HipHop, Alt_Music, Blues, Acoustic/Folk, Instrumental, Country, or Bollywood.
+
+Package dependencies
+```{r, warning = FALSE}
 library(tidyverse)
 library(ggplot2)
+```
+
+Check the data set and determine which variables are qualitative and which are quantitative.
+```{r}
 head(music)
 ```
 
@@ -103,15 +81,22 @@ PCA only works with numerical values. So, we need to remove **Artist Name** and 
 
 The code below creates a new data frame with only numeric columns. It also removes rows (songs) containing NA values
 
-```{r, eval = FALSE}
-music_clean <- music |> dplyr::select(-"Artist Name", -"Track Name", -"Class") |> tidyr::drop_na()
+```{r}
+music_clean <- music |> select(-"Artist Name", -"Track Name", -"Class") |> drop_na()
+
+# select() from dplyr, drop_na() from tidyr
 ```
 
 ### Step 2: Use `princomp` function to run PCA
 
-`princomp()` performs a principal components analysis on the given numeric data matrix, passed in as argument x, and returns the results as an object of class princomp.
+`princomp()` performs a principal components analysis on the given numeric data matrix, passed in as argument x, and returns the results as an object of class princomp. 
 
-```{r, eval = FALSE}
+This function is from the {stats} package in base R.
+
+R Core Team (2022). R: A language and environment for statistical computing. R Foundation
+  for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
+
+```{r}
 princomp(x = music_clean)
 ```
 
@@ -119,11 +104,15 @@ princomp(x = music_clean)
 
 `autoplot_pca()` takes the following arguments [1] an `object` returned by a function performing PCA, [2] a `mapping` call to `aes()` specifying additional mappings between variables and plot aesthetics, [3] `data` the data frame associated with the PCA, and returns a ggplot2 object.
 
+<cite source>
+
 ```{r, eval = FALSE}
 autoplot_pca(object = princomp, data = music_clean)
 # need to edit autoplot_pca.R file to call `ggplot2::`
 ```
 
+
+How much of the variance in the data set is explained by PC1? By PC2? Which variables contribute to PC1 (and explaining the greatest amount of variance)? 
 
 ## Add a Data Directory and Data
 
