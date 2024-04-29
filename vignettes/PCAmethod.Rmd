@@ -97,7 +97,7 @@ R Core Team (2022). R: A language and environment for statistical computing. R F
   for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
 
 ```{r}
-princomp(x = music_clean)
+pc <- princomp(x = music_clean)
 ```
 
 ### Step 3: Use `autoplot_pca` function to visualize PCA
@@ -107,7 +107,7 @@ princomp(x = music_clean)
 <cite source>
 
 ```{r, eval = FALSE}
-autoplot_pca(object = princomp, data = music_clean)
+ggbiplot(pc)
 # need to edit autoplot_pca.R file to call `ggplot2::`
 ```
 
