@@ -91,7 +91,7 @@ princomp <-
     if (is.null(cen)) cen <- rep(NA_real_, nrow(cv))
     ## recompile the eigenvector (PCA) information
     edc <- list(sdev = sdev,
-                loadings = structure(edc$vectors, class="loadings"), ## loadings are the correlations between the component and the original variables; i.e., how much of the variation in a variable is explained by the component
+                loadings = structure(edc$vectors, class="loadings"), ## loadings are the contributions of each variable to the PC
                 center = cen, scale = sc, n.obs = n.obs,
                 scores = scr, call = cl)
     ## The Splus function also return list elements factor.sdev,
