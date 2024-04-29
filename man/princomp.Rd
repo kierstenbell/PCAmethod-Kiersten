@@ -18,7 +18,7 @@ princomp(
 
 \item{cor}{a logical value indicating whether the calculation should use the correlation matrix instead of the covariance matrix. Can only use if there are no constant variables. Defaults to FALSE.}
 
-\item{scores}{a logical value indicating whether teh score on each principal component should be calculated. Defaults to TRUE.}
+\item{scores}{a logical value indicating whether the score on each principal component should be calculated. Defaults to TRUE.}
 
 \item{covmat}{a covariance matrix or list as returned by `cov.wt`. If TRUE, this is used rather than the covariance matrix of x.}
 

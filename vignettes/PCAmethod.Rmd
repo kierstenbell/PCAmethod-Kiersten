@@ -195,7 +195,7 @@ Check the data set and determine which variables are qualitative and which are
 quantitative. Also determine which variables would require standardization.
 ```{r}
 head(music)
-summary(music_clean)
+summary(music)
 ```
 
 #### Clean the **music** data set
@@ -209,7 +209,7 @@ removes rows (songs) containing NA values
 
 ```{r}
 music_clean <- music |> select(-"Artist Name", -"Track Name") |> drop_na()
-head(music_clean)
+head(music)
 ```
 
 ### Use `princomp` function to run PCA
