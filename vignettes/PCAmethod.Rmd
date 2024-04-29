@@ -232,7 +232,7 @@ R Core Team (2022). _R: A language and environment for statistical computing_. R
   for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>.
 
 ```{r}
-pc <- princomp(x = music_clean, cor = TRUE)
+pc <- princomp(x = music_clean[, -1], cor = TRUE)
 
 summary(pc)
 loadings(pc)
