@@ -313,6 +313,7 @@ How much of the variance in the data set is explained by PC1? By PC2? Which
 variables contribute to PC1 (and explain the greatest amount of variance)? 
 
 We can also specify which PCs we plot using the `choices` argument. Below, PC 2 and 3 are selected. Clusters are far less apparent.
+
 ```{r}
 ggbiplot(pc, var.scale = 1, choices=2:3, varname.adjust = 1.2, point.size=1, alpha=0.05, groups=music_clean$Class, ellipse = TRUE, ellipse.linewidth = 0.5, ellipse.alpha = 0.1, circle = TRUE, varname.color = "darkred") + labs(fill = "Genre", color="Genre") +
   ggtitle("PCA of Song Variables") +
@@ -325,7 +326,9 @@ ggbiplot(pc, var.scale = 1, choices=2:3, varname.adjust = 1.2, point.size=1, alp
   theme(axis.line.x = element_line(color="black", linewidth = 0.8),
   axis.line.y = element_line(color="black", linewidth = 0.8)) 
 ```
+
 And here is PC 3 vs PC 4. Note that the difference in proportion of variation is starting to become quite small.
+
 ```{r}
 ggbiplot(pc, var.scale = 1, choices=3:4, varname.adjust = 1.2, point.size=1, alpha=0.05, groups=music_clean$Class, ellipse = TRUE, ellipse.linewidth = 0.5, ellipse.alpha = 0.1, circle = TRUE, varname.color = "darkred") + labs(fill = "Genre", color="Genre") + 
   ggtitle("PCA of Song Variables") +
@@ -340,6 +343,7 @@ ggbiplot(pc, var.scale = 1, choices=3:4, varname.adjust = 1.2, point.size=1, alp
 ```
 
 Here are the final two PCs, which make up only 3.3% of the total variation. 
+
 ```{r}
 ggbiplot(pc, var.scale = 1, choices=13:14, varname.adjust = 1.2, point.size=1, alpha=0.05, groups=music_clean$Class, ellipse = TRUE, ellipse.linewidth = 0.5, ellipse.alpha = 0.1, circle = TRUE, varname.color = "darkred") + labs(fill = "Genre", color="Genre") + 
   ggtitle("PCA of Song Variables") +
@@ -354,6 +358,7 @@ ggbiplot(pc, var.scale = 1, choices=13:14, varname.adjust = 1.2, point.size=1, a
 ```
 
 Finally, we can display PC1 against PC14. Here, we can see that the axes are nearly all horizontal due to the large difference in variation explained by PC1 compared to PC14. 
+
 ```{r}
 ggbiplot(pc, var.scale = 1, choices=c(1, 14), varname.adjust = 1.2, point.size=1, alpha=0.05, groups=music_clean$Class, ellipse = TRUE, ellipse.linewidth = 0.5, ellipse.alpha = 0.1, circle = TRUE, varname.color = "darkred") + labs(fill = "Genre", color="Genre") + 
   ggtitle("PCA of Song Variables") +
