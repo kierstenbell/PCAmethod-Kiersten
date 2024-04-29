@@ -233,13 +233,18 @@ R Core Team (2022). _R: A language and environment for statistical computing_. R
 
 ```{r}
 pc <- princomp(x = music_clean, cor = TRUE)
+
 summary(pc)
+loadings(pc)
 ```
 
-The results here show three elements of the PCA: [1] Standard Deviation, 
+`summary()` returns the three elements of the PCA: [1] Standard Deviation, 
 [2] Proportion of Variance, and [3] Cumulative Proportion (of Variance). The 
 proportion of variance is often the most important for understanding the 
 relative importance of each PC compared to all others.
+
+`loadings()` returns the loading scores which tell us which variables are most 
+greatly contributing to the differences we see in the groups.
 
 ### Step 3: Use `ggbiplot` function to visualize PCA
 
