@@ -30,6 +30,13 @@ directions of maximum variance in the original high-dimensional data and
 projecting it onto a lower-dimensional space while collating highly correlated 
 variables together (and retaining most of the information).
 
+This vignette was based on the following sources:
+
+* [Principal Component Analysis in R Tutorial](https://www.datacamp.com/tutorial/pca-analysis-r)
+* [StatQuest: Principal Component Analysis(PCA), Step-by-Step](https://www.youtube.com/watch?v=FgakZw6K1QQ)
+* [Principal Component Analysis in 3 Simple Steps](https://sebastianraschka.com/Articles/2015_pca_in_3_steps.html)
+* Images : [Principal Component Analysis (PCA) - easy and practical explanation](https://www.youtube.com/watch?v=5vgP05YpKdE)
+
 ## Introduction {.unnumbered}
 
 Principal component analysis is a linear transformation method used to analyze, 
@@ -153,13 +160,6 @@ life, including finance, image processing, healthcare, and security. In our
 personal research, PCAs are commonly used to better analyze/understand 
 population clustering as well as genetic and behavioral analysis. 
 
-This vignette was based on the following sources
-
-* [Principal Component Analysis in R Tutorial](https://www.datacamp.com/tutorial/pca-analysis-r)
-* [StatQuest: Principal Component Analysis(PCA), Step-by-Step](https://www.youtube.com/watch?v=FgakZw6K1QQ)
-* [Principal Component Analysis in 3 Simple Steps](https://sebastianraschka.com/Articles/2015_pca_in_3_steps.html)
-* Images : [Principal Component Analysis (PCA) - easy and practical explanation](https://www.youtube.com/watch?v=5vgP05YpKdE)
-
 ## Usage {.unnumbered}
 
 Here, we created a package for Principal Component Analysis (PCA) using 
@@ -206,11 +206,13 @@ PCA only works with numerical values. So, we need to remove **Artist Name** and
 themselves and is our grouping variable.
 
 The code below creates a new data frame with only numeric columns. It also 
-removes rows (songs) containing NA values
+removes rows (songs) containing NA values. `length()` tells us how many songs 
+are left in the cleaned data set.
 
 ```{r}
 music_clean <- music |> select(-"Artist Name", -"Track Name") |> drop_na()
 head(music_clean)
+length(music_clean)
 ```
 
 ### Use `princomp` function to run PCA
@@ -234,9 +236,6 @@ R Core Team (2022). _R: A language and environment for statistical computing_. R
 
 ```{r}
 pc <- princomp(x = music_clean[, -1], cor = TRUE)
-
-summary(pc)
-loadings(pc)
 ```
 
 `summary()` returns the three elements of the PCA: [1] Standard Deviation, 
@@ -244,8 +243,17 @@ loadings(pc)
 proportion of variance is often the most important for understanding the 
 relative importance of each PC compared to all others.
 
+```{r}
+summary(pc)
+```
+
 `loadings()` returns the loading scores which tell us which variables are most 
-greatly contributing to the differences we see in the groups.
+greatly contributing to the differences we see in the groups. We can restrict 
+this to the most explanatory PCs using `select()`
+
+```{r}
+loadings(pc |> select(Comp.1, Comp.2, Comp.3, Comp.4))
+```
 
 ### Step 3: Use `ggbiplot` function to visualize PCA
 
