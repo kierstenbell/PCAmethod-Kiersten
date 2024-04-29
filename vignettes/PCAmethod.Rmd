@@ -11,7 +11,7 @@ editor_options:
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", echo = TRUE, 
-                      fig.width = 8, fig.height = 8)
+                      fig.width = 6, fig.height = 6)
 ```
 
 ```{r setup}
@@ -32,7 +32,13 @@ This vignette was based on the following sources:
 * [Principal Component Analysis in R Tutorial](https://www.datacamp.com/tutorial/pca-analysis-r)
 * [StatQuest: Principal Component Analysis(PCA), Step-by-Step](https://www.youtube.com/watch?v=FgakZw6K1QQ)
 * [Principal Component Analysis in 3 Simple Steps](https://sebastianraschka.com/Articles/2015_pca_in_3_steps.html)
-* Images : [Principal Component Analysis (PCA) - easy and practical explanation](https://www.youtube.com/watch?v=5vgP05YpKdE)
+* Images: [Principal Component Analysis (PCA) - easy and practical explanation](https://www.youtube.com/watch?v=5vgP05YpKdE)
+* `princomp` function: 
+  - R Core Team (2022). _R: A language and environment for statistical computing_. R Foundation
+  for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>.
+* `ggbiplot` function:
+  - Vu VQ, Friendly M (2024). _ggbiplot: A Grammar of Graphics Implementation of Biplots_.
+  R package version 0.6.2, <https://CRAN.R-project.org/package=ggbiplot>.
 
 ## Introduction {.unnumbered}
 
@@ -206,13 +212,13 @@ PCA only works with numerical values. So, we need to remove **Artist Name** and
 themselves and is our grouping variable.
 
 The code below creates a new data frame with only numeric columns. It also 
-removes rows (songs) containing NA values. `length()` tells us how many songs 
+removes rows (songs) containing NA values. `nrow()` tells us how many songs 
 are left in the cleaned data set.
 
 ```{r}
 music_clean <- music |> select(-"Artist Name", -"Track Name") |> drop_na()
 head(music_clean)
-length(music_clean)
+nrow(music_clean)
 ```
 
 ### Use `princomp` function to run PCA
@@ -223,16 +229,13 @@ matrix, passed in as argument `x`, and returns the results as an object of class
 calculation should use the correlation matrix (standardized) instead of the 
 covariance matrix and defaults to `FALSE`.
 
+This function is from the {stats} package in base R.
+
 > NOTE: It usually makes sense to use the correlation matrix, which standardizes 
 all measurements to the unit scale and aids in interpretation of the most 
 important components, as the base assumption is that all variables are on the 
 same scale so greater variance = more explanatory power. However, if all 
 variables were measured on the same scale, you could use the covariance matrix.
-
-This function is from the {stats} package in base R.
-
-R Core Team (2022). _R: A language and environment for statistical computing_. R Foundation
-  for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>.
 
 ```{r}
 pc <- princomp(x = music_clean[, -1], cor = TRUE)
@@ -249,10 +252,10 @@ summary(pc)
 
 `loadings()` returns the loading scores which tell us which variables are most 
 greatly contributing to the differences we see in the groups. We can restrict 
-this to the most explanatory PCs by specifying the columns.
+this to the most (or least) explanatory PCs by specifying the columns.
 
 ```{r}
-pc$loadings[, 1:4]
+pc$loadings[, c(1:4, 13:14)]
 ```
 
 ### Step 3: Use `ggbiplot` function to visualize PCA
@@ -263,10 +266,6 @@ the groups that the observations belong to. If provided the points will be
 colored according to groups.
 
 This function is from the {ggbiplot} package created by Vincent Q Vu.
-
-Vu VQ, Friendly M (2024). _ggbiplot: A Grammar of Graphics Implementation of Biplots_.
-  R package version 0.6.2, <https://CRAN.R-project.org/package=ggbiplot>.
-
 https://github.com/friendly/ggbiplot
 
 Some data cleaning for presentation.
