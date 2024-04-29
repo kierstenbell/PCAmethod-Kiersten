@@ -1,5 +1,5 @@
 ---
-title: "PCAmethod: Principal Component Analysis"
+title: "Principal Component Analysis"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Principal Component Analysis}
@@ -249,10 +249,10 @@ summary(pc)
 
 `loadings()` returns the loading scores which tell us which variables are most 
 greatly contributing to the differences we see in the groups. We can restrict 
-this to the most explanatory PCs using `select()`
+this to the most explanatory PCs by specifying the columns.
 
 ```{r}
-loadings(pc |> select(Comp.1, Comp.2, Comp.3, Comp.4))
+pc$loadings[, 1:4]
 ```
 
 ### Step 3: Use `ggbiplot` function to visualize PCA
