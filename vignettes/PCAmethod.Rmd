@@ -9,8 +9,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -26,13 +24,27 @@ library(PCAmethod)
 
 This vignette provides an overview of how to conduct a principal component 
 analysis (PCA). PCA is a statistical method used to compress high-dimensional 
-(>3) data and retain the most informative aspects. This is done by transforming 
-the original data into a lower-dimensional space while collating highly 
-correlated variables together.
+(>3) data and retain the most informative aspects. This is done by finding the 
+directions of maximum variance in the original high-dimensional data and 
+projecting it onto a lower-dimensional space while collating highly correlated 
+variables together (and retaining most of the information).
 
 ## Introduction {.unnumbered}
 
-Principal component analysis is a way to analyze and draw conclusions from more than three variables. For example, we could ask what contributes to a longer lifespan in humans from a data set that includes over 200 variables. To draw conclusions about human longevity, we first need to visualize and analyze this data set. Visualizing in more than three dimensions is difficult, thus visualizing human lifespan with 200 variables (dimensions) cannot be done. PCAs take all factors (variables), combines them in a smart way, and produces new factors that are (1) correlated with each other and (2) ranked from most important to least important. The new factors produced by PCA are called **principal components**. Principal component 1 (PC1) explains a majority of the data set, followed by principal component 2 (PC2), which explains the next largest portion of the data set, and onward. In the example about human longevity, 200 variables associated with lifespan can be condensed down to 5 principal components. 
+Principal component analysis is a linear transformation method used to analyze, 
+identify patterns, and draw conclusions from more than three variables. For 
+example, we could ask what contributes to a longer lifespan in humans from a 
+data set that includes over 200 variables. To draw conclusions about human 
+longevity, we first need to visualize and analyze this data set. Visualizing in 
+more than three dimensions is difficult, thus visualizing human lifespan with 
+200 variables (dimensions) cannot be done. PCAs take all factors (variables), 
+combines them in a smart way, and produces new factors that are [1] correlated 
+with each other and [2] ranked from most important to least important. The new 
+factors produced by PCA are called **principal components**. Principal component 
+1 (PC1) explains the greatest amount of the data set, followed by principal 
+component 2 (PC2), which explains the next largest portion of the data set, and 
+onward. In the example about human longevity, 200 variables associated with 
+lifespan can be condensed down to 5 principal components. 
 
 <div style="text-align: center;">
 <img src="https://github.com/ecarlson5683/PCAmethod/blob/main/pics/Fig1.png?raw=true" width="75%" height="75%">
@@ -41,21 +53,38 @@ Principal component analysis is a way to analyze and draw conclusions from more 
 
 #### How does a PCA pick its components? 
 
-PCA asks the question "How can we arrange these data to preserve as much information as possible?" This results in an optimization problem using Lagrange Multipliers (more on that [here](https://medium.com/nerd-for-tech/pca-part-1-the-lagrangian-d66732b573ed)) that collates the most contributory variables in order to preserve as much information as possible. In other words, minimizing the least sum of squares.
+PCA asks the question "How can we arrange these data to preserve as much 
+information as possible?" This results in an optimization problem using Lagrange 
+Multipliers (more on that [here](https://medium.com/nerd-for-tech/pca-part-1-the-lagrangian-d66732b573ed)) 
+that collates the most contributory variables in order to preserve as much 
+information as possible. In other words, creating a line that minimizes the 
+sum of squares.
 
-To better understand what variables are associated with the principal components, we will have to look at the principal component *loadings*. Each variable gets a respective weight for each principal component. Using our example data set, we can see that average heart rate, BMI, cholesterol levels, and greasy diet greatly contribute to PC1. Remember PC1 is the **most important PC** as it explains the majority of the variation.
+To better understand the variables associated with each principal component, 
+we look at the principal component *loadings*. Each variable gets a respective 
+weight for each principal component. Using our example data set, we can see that 
+average heart rate, BMI, cholesterol levels, and greasy diet greatly contribute 
+to PC1. Remember PC1 is the **most important PC** as it explains the greatest 
+amount of the variation in the data set.
 
 <div style="text-align: center;">
 <img src="https://github.com/ecarlson5683/PCAmethod/blob/main/pics/Fig3.png?raw=true" width="75%" height="75%">
 </div>
 
-We can also plot the loadings to see the relationship between all the variables. To simplify the graph, we will only plot some of the variables. Variables with a positive correlation are grouped together, such as obesity, cholesterol levels, BMI, and greasy diet. Keep in mind that this is **not** the PCA plot. This is the principal components loadings plot, and the plotted points are **not** representing the individual humans.
+We can also plot the **loadings** to see the relationship between all the variables. 
+To simplify the graph, we will only plot some of the variables. Variables with a 
+positive correlation are grouped together, such as obesity, cholesterol levels, 
+BMI, and greasy diet. Keep in mind that this is **not** the PCA plot. This is 
+the principal components **loadings** plot, and the plotted points do **not** 
+represent the individual humans.
 
 <div style="text-align: center;">
 <img src="https://github.com/ecarlson5683/PCAmethod/blob/main/pics/Fig4.png?raw=true" width="75%" height="75%">
 </div>
 
-Additionally, a variable's location from the origin is important. The farther away the variable is from the origin, the stronger its impact on the statistical model. 
+Additionally, a variable's location from the origin is important. The farther 
+the variable is from the origin, the stronger its impact on the statistical 
+model. 
 
 <div style="text-align: center;">
 <img src="https://github.com/ecarlson5683/PCAmethod/blob/main/pics/Fig5.png?raw=true" width="75%" height="75%">
@@ -63,83 +92,154 @@ Additionally, a variable's location from the origin is important. The farther aw
 
 #### How is a PCA conducted? 
 
-1. Data normalization: Each variable must be *quantitative*. Data will be normalized by subtracting its mean and dividing by its standard deviation. 
-2. Covariance matrix: Compute a symmetric matrix generated from the covariance, a measure of the total variation of two random variables from their expected values, between all pairs of variables. 
-3. Eigenvectors and eigenvalues: Eigenvector represents a direction such as "vertical" or "90 degrees". An eigenvalue, on the other hand, is a number representing the amount of variance present in the data for a given direction. Each eigenvector has its corresponding eigenvalue. 
-4. Selection of principal components. There are as many pairs of eigenvectors and eigenvalues as the number of variables in the data. In the data with lifespan, **not** all the pairs are relevant. So, the eigenvector with the highest eigenvalue corresponds to the first principal component. The second principal component is the eigenvector with the second highest eigenvalue, and so on.
-5.  Data transformation in new dimensional space: this step involves re-orienting the original data onto a new subspace defined by the principal components This reorientation is done by multiplying the original data by the previously computed eigenvectors.
+1. **Data normalization:** Each variable must be *quantitative*. Since PCA 
+yields a feature subspace that maximizes the variance along the axes, it makes 
+sense to standardize the data, especially, if it was measured on different 
+scales. The unit scale (mean=0 and variance=1) is useful for standardization, 
+and requires subtracting the mean and dividing by the standard deviation from 
+individual observations of a given variable. 
+$$\hat{x} = \frac{x_i - \bar{x}}{s}$$
+2. **Covariance matrix:** Compute a symmetric matrix ($d × d$) generated from 
+the covariance, a measure of the total variation of two random variables from 
+their expected values, between all pairs of variables. The covariance between 
+two variables is calculated as:
+$$\sigma_{jk} = \frac{1}{n−1} \sum^{n}_{i=1}(x_{ij} − \bar{x}_j)(x_{ik} − \bar{x}_k)$$
+The calculation of the covariance matrix can be summarized by:
+$$\sum =  \frac{1}{n−1}((X − \bar{x})^T(X − \bar{x}))$$
+where $\bar{x}$ is the mean vector $$\bar{x} = \frac{1}{n} \sum^{n}_{i=1}x_i$$
+The mean vector is a $d$-dimensional vector where each value in this vector 
+represents the sample mean of a feature column in the data set.
+3. **Eigenvectors and eigenvalues:** An **eigenvector** represents a direction 
+such as "vertical" or "90 degrees". An **eigenvalue**, on the other hand, is a 
+number representing the amount of variance present in the data for a given 
+direction. Each eigenvector has its corresponding eigenvalue, which determine 
+the direction and magnitude of the new feature space.
+4. **Selection of principal components:** There are as many pairs of 
+eigenvectors and eigenvalues as the number of variables in the data. In the 
+data with lifespan, **not** all the pairs are relevant. So, the eigenvector 
+with the highest eigenvalue corresponds to the first principal component (PC1). 
+The second principal component (PC2) is the eigenvector with the second highest 
+eigenvalue, and so on. The eigenvectors with the lowest eigenvalues bear the 
+least information about the distribution of the data; those are the ones that 
+can be dropped.
+5.  **Construction of the projection matrix:** This step involves re-orienting 
+the original multi-dimensional data onto a new 2-dimensional subspace defined 
+by the "top 2" principal components. This reorientation is done by multiplying 
+the original data by the previously computed eigenvectors.
 
 #### How to read a PCA plot
-In this PCA plot, each point is one of the human data. We can see that the data are in three distinct clusters. If we color-coordinate the data by age, we can see that one cluster is ~110 years old, one cluster is ~80 years old, and one cluster is ~50 years old. The blue and green clusters (as well as blue and yellow clusters) are different based on PC1. So, the differences in lifespan are probably due to factors that heavily influence PC1 (from the loadings, we know this includes heart rate, BMI, cholesterol levels, and greasy diet). The yellow and green clusters are different based on PC2. So the factors that influence PC2 are going to be responsible for differentiating those two clusters. Remember that principal components are ranked by how much they describe the data, and PC1 is more important than PC2. This means that differences along the PC1 axis are larger than similar looking distances along PC2.
+In this PCA plot, each point is one of the human data. We can see that the data 
+are in three distinct clusters. If we color-coordinate the data by age, we can 
+see that one cluster is ~110 years old, one cluster is ~80 years old, and one 
+cluster is ~50 years old. The blue and green clusters (as well as blue and 
+yellow clusters) are different based on PC1. So, the differences in lifespan 
+are probably due to factors that heavily influence PC1 (from the loadings, we 
+know this includes heart rate, BMI, cholesterol levels, and greasy diet). The 
+yellow and green clusters are different based on PC2. So the factors that 
+influence PC2 are going to be responsible for differentiating those two 
+clusters. Remember that principal components are ranked by how much they 
+describe the data, and PC1 is more important than PC2. This means that 
+differences along the PC1 axis are larger than similar looking distances along 
+PC2.
 
 <div style="text-align: center;">
 <img src="https://github.com/ecarlson5683/PCAmethod/blob/main/pics/Fig7.png?raw=true" width="75%" height="75%">
 </div>
 
 #### Applications for PCA 
-Principal component analysis has a variety of applications in our day-to-day life, including finance, image processing, healthcare, and security. In our personal research, PCAs are commonly used to better analyze/understand population clustering as well as genetic and behavioral analysis. 
+Principal component analysis has a variety of applications in our day-to-day 
+life, including finance, image processing, healthcare, and security. In our 
+personal research, PCAs are commonly used to better analyze/understand 
+population clustering as well as genetic and behavioral analysis. 
 
 This vignette was based on the following sources
 
 * [Principal Component Analysis in R Tutorial](https://www.datacamp.com/tutorial/pca-analysis-r)
 * [StatQuest: Principal Component Analysis(PCA), Step-by-Step](https://www.youtube.com/watch?v=FgakZw6K1QQ)
+* [Principal Component Analysis in 3 Simple Steps](https://sebastianraschka.com/Articles/2015_pca_in_3_steps.html)
 * Images : [Principal Component Analysis (PCA) - easy and practical explanation](https://www.youtube.com/watch?v=5vgP05YpKdE)
 
 ## Usage {.unnumbered}
 
-Here, we created a package for Principal Component Analysis (PCA) using existing functions.
+Here, we created a package for Principal Component Analysis (PCA) using 
+existing functions.
 
-The following code uses the **music** dataset bundled in the {PCAmethod} package to run a principal component analysis of several variables that contribute to music genre. We can use PCA to determine which variables combine to explain the greatest amount of the variance in the data set. 
+The following code uses the **music** dataset bundled in the {PCAmethod} package t
+o run a principal component analysis of several variables that contribute to 
+music genre. We can use PCA to determine which variables combine to explain the 
+greatest amount of the variance in the data set. 
 
-### Preliminaries
+### Preparing the **music** data set 
 
-The **music** dataset is derived from the [music-genre-classification train.csv](https://www.kaggle.com/datasets/purumalgi/music-genre-classification/data?select=train.csv) dataset in ***Kaggle*** and was created during a **MachineHack Hackathon**. The dataset includes 17,996 songs with 17 metrics (artist name; track name; popularity; ‘danceability’; energy; key; loudness; mode; ‘speechiness’; ‘acousticness’; ‘instrumentalness’; liveness; valence; tempo; duration in milliseconds and time_signature). **Class** is the target variable (genre) ranging from 0-11 and indicating Rock, Indie, Alt, Pop, Metal, HipHop, Alt_Music, Blues, Acoustic/Folk, Instrumental, Country, or Bollywood.
+#### About the **music** data set
 
-Package dependencies
+The **music** data set is derived from the [music-genre-classification train.csv](https://www.kaggle.com/datasets/purumalgi/music-genre-classification/data?select=train.csv) dataset in ***Kaggle*** and was created during a **MachineHack Hackathon**. 
+The dataset includes 17,996 songs with 17 metrics (artist name; track name; 
+popularity; ‘danceability’; energy; key; loudness; mode; ‘speechiness’; 
+‘acousticness’; ‘instrumentalness’; liveness; valence; tempo; duration in 
+milliseconds and time_signature). **Class** is the target variable (genre) 
+ranging from 0-11 and indicating Rock, Indie, Alt, Pop, Metal, HipHop, 
+Alt_Music, Blues, Acoustic/Folk, Instrumental, Country, or Bollywood.
+
+#### Preliminaries
+
+Load the package dependencies
 ```{r, warning = FALSE}
 library(tidyverse)
 library(ggplot2)
 ```
 
-Check the data set and determine which variables are qualitative and which are quantitative.
+#### Inspect the **music** data set
+
+Check the data set and determine which variables are qualitative and which are 
+quantitative.
 ```{r}
 head(music)
 ```
 
-### Step 1: Clean the data
+#### Clean the **music** data set
 
-PCA only works with numerical values. So, we need to remove **Artist Name** and **Track Name** columns. Also, the **Class** column is not relevant to the analysis since it is refers to the genres themselves.
+PCA only works with numerical values. So, we need to remove **Artist Name** and 
+**Track Name** columns. Also, the **Class** column refers to the genres 
+themselves and is our grouping variable.
 
-The code below creates a new data frame with only numeric columns. It also removes rows (songs) containing NA values
+The code below creates a new data frame with only numeric columns. It also 
+removes rows (songs) containing NA values
 
 ```{r}
 music_clean <- music |> select(-"Artist Name", -"Track Name", -"Class") |> drop_na()
 head(music_clean)
 ```
 
-### Step 2: Use `princomp` function to run PCA
+### Use `princomp` function to run PCA
 
-`princomp()` performs a principal components analysis on the given numeric data matrix, passed in as argument x, and returns the results as an object of class princomp. 
+`princomp()` performs a principal components analysis on the given numeric data 
+matrix, passed in as argument `x`, and returns the results as an object of class 
+**princomp**. The `cor` argument is a logical value indicating whether the 
+calculation should use the correlation matrix (standardized) instead of the 
+covariance matrix and defaults to `FALSE`.
 
 This function is from the {stats} package in base R.
 
-R Core Team (2022). R: A language and environment for statistical computing. R Foundation
-  for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
+R Core Team (2022). _R: A language and environment for statistical computing_. R Foundation
+  for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>.
 
 ```{r}
-pc <- princomp(x = music_clean)
+pc <- princomp(x = music_clean, cor = TRUE)
 pc
 ```
 
-### Step 3: Use `autoplot_pca` function to visualize PCA
+### Use `ggbiplot` function to visualize PCA
 
-`autoplot_pca()` takes the following arguments [1] an `object` returned by a function performing PCA, [2] a `mapping` call to `aes()` specifying additional mappings between variables and plot aesthetics, [3] `data` the data frame associated with the PCA, and returns a ggplot2 object.
+`ggbiplot()` takes the following arguments [1] `pcobj` object returned by a function performing PCA, [2] `groups`, an optional factor variable indicating the groups that the observations belong to. If provided the points will be colored according to groups.
 
-<cite source>
+This function is from the {ggbiplot} package created by Vincent Q Vu.
+
+Vu VQ, Friendly M (2024). _ggbiplot: A Grammar of Graphics Implementation of Biplots_.
+  R package version 0.6.2, <https://CRAN.R-project.org/package=ggbiplot>.
 
 ```{r, eval = FALSE}
 ggbiplot(pc)
-# need to edit autoplot_pca.R file to call `ggplot2::`
 ```
 
 
