@@ -36,7 +36,7 @@ Principal component analysis is a way to analyze and draw conclusions from more 
 
 #### How does a PCA pick its components? 
 
-PCA asks the question "How can we arrange these data to preserve as much information as possible?" This results in an optimization problem using Lagrange Multipliers that collates the most contributory variables in order to preserve as much information as possible.
+PCA asks the question "How can we arrange these data to preserve as much information as possible?" This results in an optimization problem using Lagrange Multipliers (more on that [here](https://medium.com/nerd-for-tech/pca-part-1-the-lagrangian-d66732b573ed)) that collates the most contributory variables in order to preserve as much information as possible. In other words, minimizing the least sum of squares.
 
 #### How is a PCA conducted? 
 
@@ -83,8 +83,7 @@ The code below creates a new data frame with only numeric columns. It also remov
 
 ```{r}
 music_clean <- music |> select(-"Artist Name", -"Track Name", -"Class") |> drop_na()
-
-# select() from dplyr, drop_na() from tidyr
+head(music_clean)
 ```
 
 ### Step 2: Use `princomp` function to run PCA
@@ -98,6 +97,7 @@ R Core Team (2022). R: A language and environment for statistical computing. R F
 
 ```{r}
 pc <- princomp(x = music_clean)
+pc
 ```
 
 ### Step 3: Use `autoplot_pca` function to visualize PCA
