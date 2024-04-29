@@ -27,9 +27,8 @@ LazyData: true
 Imports: 
     ggplot2,
     ggrepel,
-    plyr,
     scales,
-    grid
+    stats
 Suggests: 
     knitr,
     manipulate,

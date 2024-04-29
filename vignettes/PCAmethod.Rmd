@@ -82,8 +82,8 @@ PCA only works with numerical values. So, we need to remove **Artist Name** and 
 The code below creates a new data frame with only numeric columns. It also removes rows (songs) containing NA values
 
 ```{r}
-music_clean <- music |> select(-"Artist Name", -"Track Name", -"Class") |> drop_na()
-
+#music_clean <- music |> select(-"Artist Name", -"Track Name", -"Class") |> drop_na()
+music_clean <- music |> select(-"Artist Name", -"Track Name") |> drop_na()
 # select() from dplyr, drop_na() from tidyr
 ```
 
@@ -97,18 +97,33 @@ R Core Team (2022). R: A language and environment for statistical computing. R F
   for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
 
 ```{r}
-pc <- princomp(x = music_clean)
+pc <- princomp(x = music_clean, cor=TRUE)
+summary(pc)
 ```
 
-### Step 3: Use `autoplot_pca` function to visualize PCA
+The results here show three elements of the PCA: [1] Standard Deviation, [2] Proportion of Variance, and [3] Cumulative Proportion (of Variance). The proportion of variance (2) is often the most important for understanding the relative importance of each PC compared to all others.
 
-`autoplot_pca()` takes the following arguments [1] an `object` returned by a function performing PCA, [2] a `mapping` call to `aes()` specifying additional mappings between variables and plot aesthetics, [3] `data` the data frame associated with the PCA, and returns a ggplot2 object.
+### Step 3: Use `ggbiplot` function to visualize PCA
 
-<cite source>
+`ggbiplot()` only requires one argument, an `object` returned by a function performing PCA. Additional arguments help customize the output for visual clarity and data analysis. For example, the `groups` argument classifies each data point by a variable in the original data set, allowing the user to see whether different clusters form on the new PC axes. 
 
+https://github.com/friendly/ggbiplot
+
+Some data cleaning for presentation.
 ```{r, eval = FALSE}
-ggbiplot(pc)
-# need to edit autoplot_pca.R file to call `ggplot2::`
+music_clean$Class <- as.factor(music_clean$Class)
+levels(music_clean$Class) <- c("Rock", "Indie", "Alt", "Pop", "Metal", "Hip Hop", "Alt_Music", "Blues", "Acoustic/Folk", "Instrumental", "Country")
+```
+
+Without grouping, we only see the axes of variation represented by PC1 and PC2. Some trends are visible, such as "acousticness" and "energy" moving in opposite directions. 
+
+```{r}
+ggbiplot(pc, var.scale = 1, point.size=1, alpha=0.05, ellipse = TRUE, circle = TRUE)
+```
+
+Grouping by Genre, we see much clearer clusters. While most genres overlap around the origin, some distinctions are possible. For example, the Blues and Acoustic/Folk genres stand out fairly well.  
+```{r}
+ggbiplot(pc, var.scale = 1, point.size=1, alpha=0.05, groups=music_clean$Class, ellipse = TRUE, circle = TRUE) + labs(fill = "Genre", color="Genre")
 ```
 
 
@@ -116,12 +131,14 @@ How much of the variance in the data set is explained by PC1? By PC2? Which vari
 
 ## Add a Data Directory and Data
 
-The **music** dataset is used for example purposes. It is derived from the [music-genre-classification train.csv](https://www.kaggle.com/datasets/purumalgi/music-genre-classification/data?select=train.csv) dataset in ***Kaggle*** and was created during a **MachineHack Hackathon**. The dataset includes 17,996 songs with 17 metrics (artist name; track name; popularity; ‘danceability’; energy; key; loudness; mode; ‘speechiness’; ‘acousticness’; ‘instrumentalness’; liveness; valence; tempo; duration in milliseconds and time_signature). **Class** is the target variable (genre) ranging from 0-11 and indicating Rock, Indie, Alt, Pop, Metal, HipHop, Alt_Music, Blues, Acoustic/Folk, Instrumental, Country, or Bollywood.
+The **music** dataset is used for example purposes. It is derived from the [music-genre-classification train.csv](https://www.kaggle.com/datasets/purumalgi/music-genre-classification/data?select=train.csv) dataset in ***Kaggle*** and was created during a **MachineHack Hackathon**. The dataset includes 17,996 songs with 17 metrics (artist name; track name; popularity; ‘danceability’; energy; key; loudness; mode; ‘speechiness’; ‘acousticness’; ‘instrumentalness’; liveness; valence; tempo; duration in milliseconds and time_signature). **Class** is the target variable (genre) ranging from 0-10 and indicating Rock, Indie, Alt, Pop, Metal, HipHop, Alt_Music, Blues, Acoustic/Folk, Instrumental, Country, or Bollywood.
 
 ```{r, eval = FALSE}
 library(tidyverse)
 f <- "data/music.csv"
 music <- read_csv(f, col_names = TRUE)
 usethis::use_data(music, overwrite = TRUE)
+wine.class
 # overwrite argument replaces the data if it already exists
 ```
+
