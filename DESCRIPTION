@@ -26,7 +26,9 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     ggplot2,
-    ggrepel
+    ggrepel,
+    scales,
+    stats
 Suggests: 
     knitr,
     manipulate,

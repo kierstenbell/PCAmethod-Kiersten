@@ -4,7 +4,7 @@
 #'
 #' @param x a numeric matrix or data frame with data for PCA
 #' @param cor a logical value indicating whether the calculation should use the correlation matrix instead of the covariance matrix. Can only use if there are no constant variables. Defaults to FALSE.
-#' @param scores a logical value indicating whether teh score on each principal component should be calculated. Defaults to TRUE.
+#' @param scores a logical value indicating whether the score on each principal component should be calculated. Defaults to TRUE.
 #' @param covmat a covariance matrix or list as returned by `cov.wt`. If TRUE, this is used rather than the covariance matrix of x.
 #' @param fix_sign a logical value indicating whether or not the signs of the loadings and scores should be chosen so that the first element of each loading is non-negative.
 #' @param subset an optional vector used to select rows (observations) of the data matrix `x`
@@ -91,7 +91,7 @@ princomp <-
     if (is.null(cen)) cen <- rep(NA_real_, nrow(cv))
     ## recompile the eigenvector (PCA) information
     edc <- list(sdev = sdev,
-                loadings = structure(edc$vectors, class="loadings"), ## loadings are the correlations between the component and the original variables; i.e., how much of the variation in a variable is explained by the component
+                loadings = structure(edc$vectors, class="loadings"), ## loadings are the contributions of each variable to the PC
                 center = cen, scale = sc, n.obs = n.obs,
                 scores = scr, call = cl)
     ## The Splus function also return list elements factor.sdev,
